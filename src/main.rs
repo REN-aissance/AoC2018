@@ -1,10 +1,11 @@
 mod day1;
 mod day2;
+mod day3;
 
 use std::io;
-use std::time::{Duration, Instant};
+use std::time::Instant;
 
-const FUNCTIONS: [fn(String); 2] = [day1::run, day2::run];
+const FUNCTIONS: [fn(String); 3] = [day1::run, day2::run, day3::run];
 
 fn main()
 {

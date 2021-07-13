@@ -79,4 +79,84 @@ fn a(file: &String)
     println!("{}", intersections);
 }
 
-fn b(_file: &String) {}
+fn b(file: &String)
+{
+    let mut rects: Vec<Rect> = Vec::new();
+    let re = Regex::new(r"#(\d+) @ (\d+),(\d+): (\d+)x(\d+)").unwrap();
+    for line in file.lines()
+    {
+        let caps = re.captures(line).unwrap();
+        let id: usize = caps[1].parse().unwrap();
+        let x: usize = caps[2].parse().unwrap();
+        let y: usize = caps[3].parse().unwrap();
+        let width: usize = caps[4].parse().unwrap();
+        let height: usize = caps[5].parse().unwrap();
+        rects.push(Rect::new(id, x, y, width, height));
+    }
+
+    //Perform collision check
+    for i in 0..rects.len()
+    {
+        let mut r1 = rects[i];
+        if !r1.collision
+        {
+            for j in 0..rects.len()
+            {
+                let mut r2 = rects[j];
+                if r1.intersects(&mut r2)
+                {
+                    rects.get_mut(i).unwrap().collision = r1.collision;
+                    rects.get_mut(j).unwrap().collision = r2.collision;
+                    break;
+                }
+            }
+        }
+    }
+
+    for rect in rects
+    {
+        if !rect.collision
+        {
+            println!("Found safe claim with ID #{}", rect.id);
+        }
+    }
+}
+
+#[derive(Copy, Clone)]
+struct Rect
+{
+    id: usize,
+    x1: usize,
+    y1: usize,
+    x2: usize,
+    y2: usize,
+    collision: bool,
+}
+
+impl Rect
+{
+    fn new(id: usize, x: usize, y: usize, width: usize, height: usize) -> Rect
+    {
+        Rect {
+            id: id,
+            x1: x,
+            y1: y,
+            x2: x + width,
+            y2: y + height,
+            collision: false,
+        }
+    }
+    fn intersects(&mut self, r: &mut Rect) -> bool
+    {
+        if self.id != r.id
+        {
+            if self.x2 > r.x1 && self.x1 < r.x2 && self.y2 > r.y1 && self.y1 < r.y2
+            {
+                self.collision = true;
+                r.collision = true;
+                return true;
+            }
+        }
+        false
+    }
+}

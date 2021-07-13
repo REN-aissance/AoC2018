@@ -4,7 +4,7 @@ const DAY: u32 = u32::MAX;
 
 pub fn run(c: String)
 {
-    let file = fs::read_to_string(format!("{}.txt", DAY)).unwrap();
+    let file = fs::read_to_string(format!("input/{}.txt", DAY)).unwrap();
     if c.contains("a")
     {
         a(&file);

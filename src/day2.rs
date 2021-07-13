@@ -4,7 +4,7 @@ const DAY: u32 = 2;
 
 pub fn run(c: String)
 {
-    let file = fs::read_to_string(format!("{}.txt", DAY)).unwrap();
+    let file = fs::read_to_string(format!("input/{}.txt", DAY)).unwrap();
     if c.contains("a")
     {
         a(&file);
@@ -28,12 +28,12 @@ fn a(file: &String)
             let count = countchars(c, &line);
             if count == 2 && foundtwo == false
             {
-                twos = twos + 1;
+                twos += 1;
                 foundtwo = true;
             }
             if count == 3 && foundthree == false
             {
-                threes = threes + 1;
+                threes += 1;
                 foundthree = true;
             }
         }
@@ -53,7 +53,7 @@ fn countchars(c: char, word: &str) -> u32
     {
         if c == c2
         {
-            count = count + 1;
+            count += 1;
         }
     }
     count
@@ -77,7 +77,7 @@ fn b(file: &String)
                 let c2 = linearray[j].chars().nth(k).unwrap();
                 if c1 != c2
                 {
-                    errcount = errcount + 1;
+                    errcount += 1;
                     if errcount > 1
                     {
                         continue;
